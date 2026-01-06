@@ -12,6 +12,17 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: "Helvetica Now Display Ext";
+  src: url("/assets/fonts/helvetica-now/HelveticaNowDisplay-ExtBlk.woff2") format("woff2"),
+       url("/assets/fonts/helvetica-now/HelveticaNowDisplay-ExtBlk.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+
 .content h3{
     font-weight: 400;
     font-size: 20px;
@@ -1538,4 +1549,18 @@ body.dark .prize{
 .prize-bin {
     width: 100%;
     margin-top: 25px;
+}
+
+.hero-title {
+  font-family: "Helvetica Now Display Ext", Helvetica, Arial, sans-serif;
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: #ffffff;
+  background: #000000;
+
+  margin: 0;
+  padding: 0;
 }
