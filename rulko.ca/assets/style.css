@@ -1559,7 +1559,7 @@ body.dark .prize{
 }
 
 .bigcheese{
-  font-size: clamp(90px, 14vw, 260px) !important;
+  font-size: clamp(70px, 12vw, 230px) !important;
   line-height: 0.9;
 }
 
