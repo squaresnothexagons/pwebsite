@@ -10,6 +10,7 @@ function cssPropertyValueSupported(prop, value) {
     d.style[prop] = value;
     return d.style[prop] === value;
 }
+
 $(document).ready(function(){
     if (localStorage.getItem("dark") === "true" || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && localStorage.getItem("dark") === "false")){
         $("body, html").addClass("dark");
@@ -38,25 +39,64 @@ $(document).ready(function(){
     if (isNaN(deg)) deg = 180;
 
     gradientTimer = setInterval(updateGradient,300);
+    // Run one immediate gradient update so the hero is visible before typing starts
+    updateGradient();
+
+    // Start typewriter after DOM ready so it's not hidden by the initial loading state
+    (function () {
+      const el = document.querySelector(".typewriter");
+      if (!el) return;
+
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const raw = el.getAttribute("data-text");
+
+      if (!raw) return;
+
+      // Accessibility: skip animation if user prefers reduced motion
+      if (prefersReduced) {
+        el.innerHTML = raw;
+        return;
+      }
+
+      const parts = raw.split(/(<br\s*\/?\>)/i);
+      el.innerHTML = "";
+
+      let i = 0, j = 0;
+
+      function tick() {
+        if (i >= parts.length) return;
+
+        const part = parts[i];
+
+        // Handle <br>
+        if (part.toLowerCase().startsWith("<br")) {
+          el.insertAdjacentHTML("beforeend", part);
+          i++;
+          j = 0;
+          requestAnimationFrame(tick);
+          return;
+        }
+
+        el.insertAdjacentText("beforeend", part[j] || "");
+        j++;
+
+        if (j >= part.length) {
+          i++;
+          j = 0;
+          setTimeout(tick, 120); // pause between words/lines
+        } else {
+          setTimeout(tick, 26); // typing speed
+        }
+      }
+
+      // Small delay to ensure the hero is visible (matches the immediate gradient update)
+      setTimeout(tick, 80);
+    })();
 });
 
-
-window.addEventListener('scroll', function(event){
-    var scrollTop = $(window).scrollTop();
-    if (scrollTop == 0){
-        $("#one").css("height", "100vh");
-        document.title = 'Home - Rulko.ca';
-    }else{
-        $("#one").css("height", "1px");
-        document.title = 'Portfolio - Rulko.ca';
-    }
-    if ($("body").hasClass("menu-open")) $("body").removeClass("menu-open");
-});
-
-$("#one").click(function(){$(window).scrollTop(1)});
 
 function updateGradient(){
-	deg = 90;
+    deg = 90;
     var c0_0 = colors[colorIndices[0]];
     var c0_1 = colors[colorIndices[1]];
     var c1_0 = colors[colorIndices[2]];
@@ -72,10 +112,10 @@ function updateGradient(){
     var g2 = Math.round(istep * c1_0[1] + step * c1_1[1]);
     var b2 = Math.round(istep * c1_0[2] + step * c1_1[2]);
     var color2 = 'rgb(' + r2 + ',' + g2 + ',' + b2 + ')';
-	
-	$(".destroyme").each(function(){$(this).remove()});
-	$('head').append('<style class="destroyme">.close:hover:before, .close:hover:after, .showcase .button:hover:before, .showcase-button-special:hover:before, .a-special:before{background: -webkit-linear-gradient(45deg,' + color1 + ', ' + color2 + ');background: -webkit-linear-gradient(45deg,' + color1 + ', ' + color2 + ')}</style>');
-	
+    
+    $(".destroyme").each(function(){$(this).remove()});
+    $('head').append('<style class="destroyme">.close:hover:before, .close:hover:after, .showcase .button:hover:before, .showcase-button-special:hover:before, .a-special:before{background: -webkit-linear-gradient(45deg,' + color1 + ', ' + color2 + ');background: -webkit-linear-gradient(45deg,' + color1 + ', ' + color2 + ')}</style>');
+    
     if (cssPropertyValueSupported('background-clip', 'text') || cssPropertyValueSupported('-webkit-background-clip', 'text')){
         $(".bigcheese, .contact-button i, .title").css({
             "background":'-webkit-linear-gradient(' + deg + 'deg,' + color1 + ', ' + color2 + ')',
@@ -102,8 +142,6 @@ function updateGradient(){
         colorIndices[1] = (colorIndices[1] + Math.floor(1 + Math.random() * (colors.length - 1))) % colors.length;
         colorIndices[3] = (colorIndices[3] + Math.floor(1 + Math.random() * (colors.length - 1))) % colors.length;
     }
-    //if (deg < 45) deg += 0.5;
-    //else deg = 0;
 
     $("body").removeClass("is-loading");
 }
@@ -167,4 +205,27 @@ function save(){
 
 $('.preload').load(function(){
    $(this).css('background','none');
+});
+
+// Restore hero -> portfolio interactions: click, wheel and touch handlers
+$(document).ready(function(){
+    $("#one").click(function(){ $('html,body').animate({scrollTop:1}, 200); });
+    var _touchStartY = null;
+    $(window).on('wheel', function(e){
+        var delta = e.originalEvent && e.originalEvent.deltaY ? e.originalEvent.deltaY : (e.deltaY || 0);
+        if (homeopen && delta > 0){
+            $('html,body').animate({scrollTop:2}, 420);
+            homeopen = false;
+        }
+    });
+    $(window).on('touchstart', function(e){ _touchStartY = e.touches && e.touches[0] ? e.touches[0].clientY : null; });
+    $(window).on('touchmove', function(e){
+        if (!homeopen || _touchStartY === null) return;
+        var y = e.touches && e.touches[0] ? e.touches[0].clientY : null;
+        if (y !== null && (_touchStartY - y) > 20){
+            $('html,body').animate({scrollTop:2}, 420);
+            homeopen = false;
+        }
+    });
+    $('.advice').click(function(){ $('html,body').animate({scrollTop:2}, 420); homeopen = false; });
 });
