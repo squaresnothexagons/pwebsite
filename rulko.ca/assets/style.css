@@ -1564,3 +1564,11 @@ body.dark .prize{
   margin: 0;
   padding: 0;
 }
+
+.bigcheese{
+  font-family: "Helvetica Now Display Ext", Helvetica, Arial, sans-serif !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
