@@ -144,15 +144,17 @@ section{
 .bigcheese{
     font-size: inherit;
     text-align: center;
-    font-weight: normal;
+    font-weight: 900; /* important: matches ExtBlk */
     display: inline;
     justify-content: center;
     transition: 0.3s ease transform;
     align-items: baseline;
     align-content: center;
     transform: scale(1,1);
-	font-family: 'HubllandRegular', sans-serif;
+    line-height: 0.05;
+    font-family: "Helvetica Now Display Ext", sans-serif;
 }
+
 body.is-loading .bigcheese{
     transform: scale(0,0);
 }
@@ -1201,7 +1203,7 @@ html.is-flickity-fullscreen {
         font-size: 50px;
     }
     .bigcheese{
-        font-size: 250px;
+        font-size: 150px;
     }
     .title{
         font-size: 23px;
@@ -1548,4 +1550,27 @@ body.dark .prize{
 .prize-bin {
     width: 100%;
     margin-top: 25px;
+}
+
+/* About text transition */
+#about-text {
+  position: relative;
+  will-change: transform, opacity;
+}
+
+.about-text-exit {
+  opacity: 0;
+  transform: translateY(-12px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.about-text-enter {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.about-text-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.45s ease, transform 0.45s ease;
 }

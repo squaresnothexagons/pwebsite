@@ -10,35 +10,87 @@ function cssPropertyValueSupported(prop, value) {
     d.style[prop] = value;
     return d.style[prop] === value;
 }
-$(document).ready(function(){
-    if (localStorage.getItem("dark") === "true" || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && localStorage.getItem("dark") === "false")){
-        $("body, html").addClass("dark");
-        $("#checkbox").attr("checked",true);
-    }else if (localStorage.getItem("dark") === null){
-        var time = (new Date()).getHours();
-        if (time >= 6 && time <= 18){
-            $("body, html").addClass("dark");
-            $("#checkbox").attr("checked",true);
-        }
+$(document).ready(function () {
+  if (localStorage.getItem("dark") === "true" || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && localStorage.getItem("dark") === "false")) {
+    $("body, html").addClass("dark");
+    $("#checkbox").attr("checked", true);
+  } else if (localStorage.getItem("dark") === null) {
+    var time = (new Date()).getHours();
+    if (time >= 6 && time <= 18) {
+      $("body, html").addClass("dark");
+      $("#checkbox").attr("checked", true);
     }
-    if ($(window).scrollTop() > 1) homeopen = false;
-    if (parameter("s") == "y"){
-        $("body").addClass("contact-open");
-        $("#contact-bin").css("display","inline-block").html("<i class='fas fa-check-circle'></i> Your message has been successfully sent!");
-        setTimeout(function(){$("#contact-bin").css("margin-bottom","-40px").fadeOut(300)},2000);
-    }
+  }
 
-    step = parseFloat(localStorage.getItem("step"));
-    if (isNaN(step)) step = 0;
+  if ($(window).scrollTop() > 1) homeopen = false;
+  if (parameter("s") == "y") {
+    $("body").addClass("contact-open");
+    $("#contact-bin").css("display", "inline-block").html("<i class='fas fa-check-circle'></i> Your message has been successfully sent!");
+    setTimeout(function () { $("#contact-bin").css("margin-bottom", "-40px").fadeOut(300) }, 2000);
+  }
 
-    colorIndices = JSON.parse(localStorage.getItem("colorIndices"));
-    if (localStorage.getItem("colorIndices") == null) colorIndices = [0,1,2,3,4,5,6];
+  step = parseFloat(localStorage.getItem("step"));
+  if (isNaN(step)) step = 0;
 
-    deg = parseInt(localStorage.getItem("deg"));
-    if (isNaN(deg)) deg = 180;
+  colorIndices = JSON.parse(localStorage.getItem("colorIndices"));
+  if (localStorage.getItem("colorIndices") == null) colorIndices = [0, 1, 2, 3, 4, 5, 6];
 
-    gradientTimer = setInterval(updateGradient,300);
+  deg = parseInt(localStorage.getItem("deg"));
+  if (isNaN(deg)) deg = 180;
+
+  gradientTimer = setInterval(updateGradient, 300);
+
+  //Apply default filter on initial load so data-hide-all works immediately
+  setTimeout(function () {
+    $('.portfolio-filter[data-query=""]').trigger('click');
+  }, 0);
 });
+
+
+// About text swap (Portfolio tabs)
+var ABOUT_DEFAULT_HTML = null;
+
+var ABOUT_GTPL_HTML =
+  "<p><b>Propulsive Landers @ Georgia Tech</b> is the student organization I founded to pursue vertical take-off and vertical landing (VTVL) technologies using hybrid propulsion. It is the brainchild of my work and vision at Georgia Tech carried over from my previous experiences at the Advanced Rocket Research Center and the Taiwan Space Agency (TASA).</p><p>As its Founder and President, I have grown the team from 0 to 100 members within a year, led it to become one of the largest engineering organizations on campus, and secured support from over 25 industry sponsors. Beyond the responsibilities of a typical president, however, I serve as the project lead that remains directly involved in and oversees all technical efforts across the team including system architecture (/systems engineering), propulsion-related projects, and vehicle integration.</p><p>Of course, none of this work would have been possible without my team and while I have my own technical contributions it is them who brought it to life. The work you explore under this section is a collaborative effort from the amazing team here at Propulsive Landers. Hope you enjoy reading through them and shoot me an email if you have any questions.</p>";
+var aboutMode = "default"; // tracks whether we're in GTPL mode
+
+
+function setAboutText(html, animate) {
+  var el = $("#about-text");
+  if (!el.length) return;
+
+  // Capture default text once
+  if (ABOUT_DEFAULT_HTML === null) ABOUT_DEFAULT_HTML = el.html();
+
+  // Fallback safety
+  if (html == null) html = ABOUT_DEFAULT_HTML;
+
+  // No-op if already the same
+  if (el.html() === html) return;
+
+  // Instant swap (no animation)
+  if (!animate) {
+    el.removeClass("about-text-exit about-text-enter about-text-enter-active");
+    el.html(html);
+    return;
+  }
+
+  // Animated swap
+  el.removeClass("about-text-enter about-text-enter-active")
+    .addClass("about-text-exit");
+
+  setTimeout(function () {
+    el.html(html);
+
+    el.removeClass("about-text-exit")
+      .addClass("about-text-enter");
+
+    // force reflow
+    el[0].offsetHeight;
+
+    el.addClass("about-text-enter-active");
+  }, 300);
+}
 
 
 window.addEventListener('scroll', function(event){
@@ -108,24 +160,77 @@ function updateGradient(){
     $("body").removeClass("is-loading");
 }
 
-$(".portfolio-filter").click(function(){
-    var query = $(this).attr("data-query"), el = $(this);
-    updateFilters();
+$(".portfolio-filter").click(function () {
+  var query = (($(this).attr("data-query") || "") + "").trim();
+  var el = $(this);
 
-    $(".portfolio-item").css("display","block").addClass("item-hidden");
-    setTimeout(function(){
-        $(".portfolio-item").css("display","none");
-        $(".portfolio-item").each(function(i, obj){
-            if (($(obj).attr("data-type") == query) || (query == ""))
-                $(obj).removeClass("item-hidden").css("display","block");
-        });
-    },200);
+  updateFilters();
 
-    $(window).on('resize', function(){updateFilters()});
-
-    function updateFilters(){
-        $('head').append('<style>.portfolio-filters:before{width:' + el.outerWidth() + 'px;left:' + (el.offset().left - $(".portfolio-filters").offset().left) + 'px}</style>');
+  // -------------------------------
+  // ABOUT TEXT BEHAVIOR (KEY PART)
+  // -------------------------------
+  if (query === "gtpl") {
+    if (aboutMode !== "gtpl") {
+      setAboutText(ABOUT_GTPL_HTML, true); // animate IN
+      aboutMode = "gtpl";
     }
+  } else {
+    if (aboutMode === "gtpl") {
+      setAboutText(ABOUT_DEFAULT_HTML, true); // animate OUT
+      aboutMode = "default";
+    }
+    // All / Career / Projects / Research:
+    // do NOTHING → text stays static
+  }
+
+  // -------------------------------
+  // PORTFOLIO FILTERING
+  // -------------------------------
+  $(".portfolio-item")
+    .css("display", "block")
+    .addClass("item-hidden");
+
+  setTimeout(function () {
+    $(".portfolio-item").css("display", "none");
+
+    $(".portfolio-item").each(function () {
+      var $obj = $(this);
+
+      var tagString = (($obj.attr("data-tags") || "") + "").trim();
+      var tags = tagString.length ? tagString.split(/\s+/) : [];
+
+      var hideFromAll =
+        ((($obj.attr("data-hide-all") || "") + "").toLowerCase() === "true");
+
+      var matchesQuery = (query === "" || tags.includes(query));
+      var allowedInAll = !(query === "" && hideFromAll);
+
+      if (matchesQuery && allowedInAll) {
+        $obj.removeClass("item-hidden").css("display", "block");
+      }
+    });
+  }, 200);
+
+  // -------------------------------
+  // FILTER UNDERLINE
+  // -------------------------------
+  $(window).off("resize.portfolio").on("resize.portfolio", function () {
+    updateFilters();
+  });
+
+  function updateFilters() {
+    $(".portfolio-filter-style").remove();
+
+    $("head").append(
+      '<style class="portfolio-filter-style">' +
+        '.portfolio-filters:before{' +
+          'width:' + el.outerWidth() + 'px;' +
+          'left:' +
+            (el.offset().left - $(".portfolio-filters").offset().left) +
+          'px}' +
+      "</style>"
+    );
+  }
 });
 
 $(".menu-item").click(function(){
