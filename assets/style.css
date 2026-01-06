@@ -12,17 +12,6 @@
   font-weight: normal;
   font-style: normal;
 }
-
-@font-face {
-  font-family: "Helvetica Now Display Ext";
-  src: url("/assets/fonts/helvetica-now/HelveticaNowDisplay-ExtBlk.woff2") format("woff2"),
-       url("/assets/fonts/helvetica-now/HelveticaNowDisplay-ExtBlk.woff") format("woff");
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-
 .content h3{
     font-weight: 400;
     font-size: 20px;
@@ -1549,41 +1538,4 @@ body.dark .prize{
 .prize-bin {
     width: 100%;
     margin-top: 25px;
-}
-
-.bigcheese{
-  font-family: "Helvetica Now Display Ext", Helvetica, Arial, sans-serif !important;
-  font-weight: 900 !important;
-  letter-spacing: 0.04em;
-}
-
-.bigcheese{
-  font-size: clamp(70px, 12vw, 230px) !important;
-  line-height: 0.9;
-}
-
-.bigcheese{
-  color: #000 !important;
-  background: none !important;              /* kills gradient background */
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  -webkit-text-fill-color: #000 !important; /* overrides transparent fill */
-}
-
-/* Force ALL text in the hero section to be solid black */
-#one, #one * {
-  color: #000 !important;
-  background: none !important;
-  -webkit-text-fill-color: #000 !important; /* kills clipped/gradient text */
-}
-
-.typewriter::after {
-  content: "▌";
-  margin-left: 0.08em;
-  animation: blink 1.1s steps(1) infinite;
-  opacity: 0.9;
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
 }

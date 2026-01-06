@@ -1,4 +1,0 @@
-# HTTrack Website Copier Cookie File
-# This file format is compatible with Netscape cookies
-rulko.ca	TRUE	/	FALSE	1999999999	PHPSESSID	59de0vn9tco1ovtgeekqptipts
-
