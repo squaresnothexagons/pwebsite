@@ -142,18 +142,81 @@ section{
     background-image: 
 }
 .bigcheese{
-    font-size: inherit;
-    text-align: center;
-    font-weight: 900; /* important: matches ExtBlk */
-    display: inline;
-    justify-content: center;
-    transition: 0.3s ease transform;
-    align-items: baseline;
-    align-content: center;
-    transform: scale(1,1);
-    line-height: 0.05;
-    font-family: "Helvetica Now Display Ext", sans-serif;
+  font-family: "Helvetica Now Display Ext", sans-serif;
+  font-weight: 900;
+  display: inline-block;
+  line-height: -20;
+  text-align: center;
+  -webkit-text-stroke: 0; /* kill hard stroke */
+  text-shadow:
+    0 2px 6px rgba(0,0,0,0.25),
+    0 10px 30px rgba(0,0,0,0.15);
+    letter-spacing: -0.15em;
+    margin-bottom: -0.7%;
+
+  color: #000; /* fallback */
+  background: none;
 }
+
+.bigcheese{
+  line-height: 0.95;
+}
+
+.bigcheese p{
+  margin: 0;
+}
+
+.bigcheese p + p{
+  margin-top: -0.15em;
+}
+
+
+
+/* Dark mode fallback */
+body.dark .bigcheese{
+  color: #fff;
+}
+
+/* Image-filled text */
+.bigcheese.imgfill{
+  background-image: url("img/hotfire.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+
+/* Only turn text transparent IF webkit text clip works */
+@supports (-webkit-background-clip: text) {
+  .bigcheese.imgfill{
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+  }
+}
+
+
+
+/* Only make it transparent if the browser supports the text-clip feature */
+@supports (-webkit-background-clip: text) {
+  .bigcheese.imgfill{
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent;
+  }
+}
+
+body.dark .bigcheese.imgfill{
+  color: #ffffff;
+}
+
+
 
 body.is-loading .bigcheese{
     transform: scale(0,0);
@@ -1203,7 +1266,7 @@ html.is-flickity-fullscreen {
         font-size: 50px;
     }
     .bigcheese{
-        font-size: 150px;
+        font-size: 250px;
     }
     .title{
         font-size: 23px;
@@ -1574,3 +1637,33 @@ body.dark .prize{
   transform: translateY(0);
   transition: opacity 0.45s ease, transform 0.45s ease;
 }
+
+.title { color: #222; }
+body.dark .title { color: #ffffff; }
+
+/* HERO BACKGROUND IMAGE (low opacity, doesn't affect text) */
+#one{
+  position: relative;
+  overflow: hidden;
+}
+
+#one::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url(""); /* file is in assets/img/ */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.18;
+  z-index: 0;
+  pointer-events: none;
+}
+
+
+#one > *{
+  position: relative;
+  z-index: 1;
+}
+
+#one{ position: relative; }

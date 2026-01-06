@@ -11,6 +11,7 @@ function cssPropertyValueSupported(prop, value) {
     return d.style[prop] === value;
 }
 $(document).ready(function () {
+    $(".bigcheese").addClass("imgfill");
   if (localStorage.getItem("dark") === "true" || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && localStorage.getItem("dark") === "false")) {
     $("body, html").addClass("dark");
     $("#checkbox").attr("checked", true);
@@ -39,11 +40,36 @@ $(document).ready(function () {
   if (isNaN(deg)) deg = 180;
 
   gradientTimer = setInterval(updateGradient, 300);
+  $(".title, .title *").removeAttr("style");
+  // Ensure title is visible immediately (light vs dark)
+if ($("body").hasClass("dark")) {
+  $(".title").css({ color: "#ffffff" });
+} else {
+  $(".title").css({ color: "#363636" });
+}
+
 
   //Apply default filter on initial load so data-hide-all works immediately
   setTimeout(function () {
     $('.portfolio-filter[data-query=""]').trigger('click');
-  }, 0);
+  }, 0); 
+  
+  // HARD FORCE: make title visible no matter what
+setTimeout(function () {
+  $("body").removeClass("is-loading");
+
+  $(".title").css({
+    "transform": "none",
+    "opacity": "1",
+    "color": $("body").hasClass("dark") ? "#ffffff" : "#363636",
+    "background": "none",
+    "-webkit-background-clip": "border-box",
+    "background-clip": "border-box",
+    "-webkit-text-fill-color": $("body").hasClass("dark") ? "#ffffff" : "#363636",
+    "text-fill-color": "initial"
+  });
+}, 50);
+
 });
 
 
@@ -107,58 +133,60 @@ window.addEventListener('scroll', function(event){
 
 $("#one").click(function(){$(window).scrollTop(1)});
 
-function updateGradient(){
-	deg = 90;
-    var c0_0 = colors[colorIndices[0]];
-    var c0_1 = colors[colorIndices[1]];
-    var c1_0 = colors[colorIndices[2]];
-    var c1_1 = colors[colorIndices[3]];
-    
-    var istep = 1 - step;
-    var r1 = Math.round(istep * c0_0[0] + step * c0_1[0]);
-    var g1 = Math.round(istep * c0_0[1] + step * c0_1[1]);
-    var b1 = Math.round(istep * c0_0[2] + step * c0_1[2]);
-    var color1 = 'rgb(' + r1 + ',' + g1 + ',' + b1 + ')';
+function updateGradient() {
+  deg = 90;
 
-    var r2 = Math.round(istep * c1_0[0] + step * c1_1[0]);
-    var g2 = Math.round(istep * c1_0[1] + step * c1_1[1]);
-    var b2 = Math.round(istep * c1_0[2] + step * c1_1[2]);
-    var color2 = 'rgb(' + r2 + ',' + g2 + ',' + b2 + ')';
-	
-	$(".destroyme").each(function(){$(this).remove()});
-	$('head').append('<style class="destroyme">.close:hover:before, .close:hover:after, .showcase .button:hover:before, .showcase-button-special:hover:before, .a-special:before{background: -webkit-linear-gradient(45deg,' + color1 + ', ' + color2 + ');background: -webkit-linear-gradient(45deg,' + color1 + ', ' + color2 + ')}</style>');
-	
-    if (cssPropertyValueSupported('background-clip', 'text') || cssPropertyValueSupported('-webkit-background-clip', 'text')){
-        $(".bigcheese, .contact-button i, .title").css({
-            "background":'-webkit-linear-gradient(' + deg + 'deg,' + color1 + ', ' + color2 + ')',
-            "background":'linear-gradient(' + deg + 'deg,' + color1 + ', ' + color2 + ')',
-            "-webkit-background-clip": "text",
-            "-webkit-text-fill-color": "transparent",
-            "background-clip": "text",
-            "text-fill-color": "rgba(0,0,0,0.01)"
-        });
-    }else{
-        $(".bigcheese, .contact-button i, .title").css({
-            "color" : color1
-        });
-    }
-    $(".menu, .tag").css({
-        "background-image":'-webkit-linear-gradient(' + deg + 'deg,' + color1 + ', ' + color2 + ')',
-        "background-image":'linear-gradient(' + deg + 'deg,' + color1 + ', ' + color2 + ')'
-    });
-    step += gradientSpeed;
-    if (step >= 1){
-        step %= 1;
-        colorIndices[0] = colorIndices[1];
-        colorIndices[2] = colorIndices[3];
-        colorIndices[1] = (colorIndices[1] + Math.floor(1 + Math.random() * (colors.length - 1))) % colors.length;
-        colorIndices[3] = (colorIndices[3] + Math.floor(1 + Math.random() * (colors.length - 1))) % colors.length;
-    }
-    //if (deg < 45) deg += 0.5;
-    //else deg = 0;
+  var c0_0 = colors[colorIndices[0]];
+  var c0_1 = colors[colorIndices[1]];
+  var c1_0 = colors[colorIndices[2]];
+  var c1_1 = colors[colorIndices[3]];
 
-    $("body").removeClass("is-loading");
+  var istep = 1 - step;
+
+  var r1 = Math.round(istep * c0_0[0] + step * c0_1[0]);
+  var g1 = Math.round(istep * c0_0[1] + step * c0_1[1]);
+  var b1 = Math.round(istep * c0_0[2] + step * c0_1[2]);
+  var color1 = "rgb(" + r1 + "," + g1 + "," + b1 + ")";
+
+  var r2 = Math.round(istep * c1_0[0] + step * c1_1[0]);
+  var g2 = Math.round(istep * c1_0[1] + step * c1_1[1]);
+  var b2 = Math.round(istep * c1_0[2] + step * c1_1[2]);
+  var color2 = "rgb(" + r2 + "," + g2 + "," + b2 + ")";
+
+  // Rebuild hover gradient styles
+  $(".destroyme").remove();
+  $("head").append(
+    '<style class="destroyme">' +
+      ".close:hover:before, .close:hover:after, " +
+      ".showcase .button:hover:before, " +
+      ".showcase-button-special:hover:before, " +
+      ".a-special:before{" +
+        "background: linear-gradient(45deg," + color1 + "," + color2 + ");" +
+      "}" +
+    "</style>"
+  );
+
+  // Only apply gradient to menu + tags (NOT text)
+  $(".menu, .tag").css({
+    "background-image": "linear-gradient(" + deg + "deg," + color1 + "," + color2 + ")"
+  });
+
+  step += gradientSpeed;
+  if (step >= 1) {
+    step %= 1;
+    colorIndices[0] = colorIndices[1];
+    colorIndices[2] = colorIndices[3];
+    colorIndices[1] =
+      (colorIndices[1] + Math.floor(1 + Math.random() * (colors.length - 1))) %
+      colors.length;
+    colorIndices[3] =
+      (colorIndices[3] + Math.floor(1 + Math.random() * (colors.length - 1))) %
+      colors.length;
+  }
+
+  $("body").removeClass("is-loading");
 }
+
 
 $(".portfolio-filter").click(function () {
   var query = (($(this).attr("data-query") || "") + "").trim();
