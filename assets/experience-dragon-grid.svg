@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 820" fill="none">
+  <g stroke="#fff" stroke-linecap="round" stroke-linejoin="round">
+    <!-- A restrained technical reference grid behind the illustration. -->
+    <g opacity=".055" stroke-width="1">
+      <circle cx="812" cy="396" r="184"/>
+      <path d="M812 189v414M605 396h414"/>
+      <path d="M376 657H1442"/>
+    </g>
+
+    <!-- Main body: a single readable serpentine silhouette. -->
+    <g opacity=".24" stroke-width="2">
+      <path d="M1392 259c-95 19-174 82-249 138-100 75-197 119-322 100-121-19-201-102-318-96-117 6-177 96-244 179-48 60-91 112-164 141"/>
+      <path d="M1380 313c-81 20-149 76-218 128-108 82-220 151-356 127-128-22-202-106-305-98-91 7-144 80-202 148-58 69-113 126-204 151"/>
+    </g>
+
+    <!-- Dorsal fins establish direction without filling the section with lines. -->
+    <g opacity=".19" stroke-width="1.6">
+      <path d="M1137 401l-31-72 74 40"/>
+      <path d="M1029 463l-41-79 83 48"/>
+      <path d="M903 504l-44-84 87 72"/>
+      <path d="M773 493l-15-91 75 96"/>
+      <path d="M643 430l29-86 37 106"/>
+      <path d="M519 401l54-68 7 84"/>
+      <path d="M398 449l40-66 19 58"/>
+    </g>
+
+    <!-- Sparse scales follow the body and make the curve read as a creature. -->
+    <g opacity=".13" stroke-width="1.2">
+      <path d="M1194 390q22 28 47 1m-114 56q23 29 49 2m-119 61q24 28 49-1m-121 63q24 25 48-3m-122 49q22 23 45-4m-120 22q20 22 43-2m-120-23q22 26 46 3m-116-59q20 28 46 7m-112-72q18 26 44 8m-109-65q17 22 39 5m-99 24q17 22 38 5m-93 75q17 18 37 2m-85 86q16 17 35 0m-84 80q14 14 31-1"/>
+    </g>
+
+    <!-- Head, horn, jaw, and whisker: organic enough to read as a hidden dragon. -->
+    <g opacity=".3" stroke-width="2">
+      <path d="M1346 307c18-25 37-43 59-54 18-9 41-10 62-4l-20 17c23 7 39 19 51 35-20 2-38 7-52 17 15 8 27 18 36 30-31 5-58 0-81-13-19-11-37-15-55-13"/>
+      <path d="M1398 255c-2-34 4-63 18-88 5 34 7 62 4 84"/>
+      <path d="M1405 254c18-20 37-36 59-47"/>
+      <path d="M1401 335c27 30 63 47 110 50"/>
+      <path d="M1390 330c0 31 18 55 53 71"/>
+      <path d="M1441 274c4 0 7 3 7 6s-3 6-7 6"/>
+    </g>
+
+    <!-- Two minimal limbs anchor the body as a dragon rather than a waveform. -->
+    <g opacity=".22" stroke-width="1.7">
+      <path d="M1090 489l29 71 48 30m-48-30 4 43m-4-43 44-12"/>
+      <path d="M629 457l-25 75-53 27m53-27-43-12m43 12-11 43"/>
+    </g>
+
+    <!-- One quiet registration mark keeps the aerospace drafting flavor. -->
+    <g opacity=".16" stroke-width="1">
+      <circle cx="812" cy="396" r="6"/>
+      <path d="M800 396h24m-12-12v24"/>
+    </g>
+  </g>
+</svg>
