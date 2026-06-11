@@ -1562,9 +1562,9 @@ h1 span { color: #fff; -webkit-text-stroke: 0; }
 .engine-carousel i:nth-child(1) { background-image: url("assets/1000N.JPG"); opacity: 1; }
 .engine-carousel i:nth-child(2) { background-image: url("assets/1000N_2.JPG"); }
 .engine-carousel i:nth-child(3) { background-image: url("assets/1000N_3.JPG"); }
-.aiaame-carousel i:nth-child(1) { background-image: url("assets/AIAAME.JPG"); opacity: 1; }
+.aiaame-carousel i:nth-child(1) { background-image: url("assets/AIAAME_3.JPG"); opacity: 1; }
 .aiaame-carousel i:nth-child(2) { background-image: url("assets/AIAAME_2.JPG"); }
-.aiaame-carousel i:nth-child(3) { background-image: url("assets/AIAAME_3.JPG"); }
+.aiaame-carousel i:nth-child(3) { background-image: url("assets/AIAAME_1.JPG"); }
 .aiaame-carousel i:nth-child(4) { background-image: url("assets/AIAAME_4.JPG"); }
 .gallery-card:hover .pfs-carousel i:nth-child(1),
 .gallery-card:focus-within .pfs-carousel i:nth-child(1),
@@ -2348,12 +2348,6 @@ h1 span { color: #fff; -webkit-text-stroke: 0; }
   }
 
   .music-card {
-    display: none !important;
-  }
-}
-
-@media (max-width: 680px) {
-  .gallery-thought {
     display: none !important;
   }
 }
