@@ -1022,9 +1022,12 @@ h1 span { color: #fff; -webkit-text-stroke: 0; }
 .experience-list::before {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 132px;
+  right: 4vw;
   z-index: -1;
-  background: url("assets/experience-taiwan-flag.png") right 4vw center / auto 84% no-repeat;
+  width: 520px;
+  height: 640px;
+  background: url("assets/experience-taiwan-flag.png") center / contain no-repeat;
   filter: grayscale(1) brightness(1.45) contrast(.68);
   opacity: .14;
   pointer-events: none;
@@ -1117,7 +1120,8 @@ h1 span { color: #fff; -webkit-text-stroke: 0; }
   line-height: 1.65;
 }
 .aerd-press,
-.gtpl-objectives {
+.gtpl-objectives,
+.org-profile {
   max-width: 860px;
   max-height: 0;
   margin-top: 0;
@@ -1131,6 +1135,23 @@ h1 span { color: #fff; -webkit-text-stroke: 0; }
     transform .42s ease .16s;
   pointer-events: none;
 }
+.org-profile {
+  max-width: 720px;
+}
+.org-profile p:not(.aerd-press-label) {
+  max-width: 690px;
+  margin: 0;
+  color: #b6b6b6;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.org-profile p:not(.aerd-press-label) + p {
+  margin-top: 9px;
+}
+.tasa-row:hover .org-profile,
+.tasa-row:focus-within .org-profile,
+.arrc-row:hover .org-profile,
+.arrc-row:focus-within .org-profile,
 .aerd-row:hover .aerd-press,
 .aerd-row:focus-within .aerd-press,
 .gtpl-row:hover .gtpl-objectives,
@@ -1264,6 +1285,7 @@ h1 span { color: #fff; -webkit-text-stroke: 0; }
 
 @media (max-width: 680px) {
   .experience-list { padding: 78px 5vw 84px; }
+  .experience-list::before { top: 96px; right: -130px; width: 360px; height: 440px; }
   .experience-heading { display: block; padding-bottom: 20px; }
   .experience-heading h2 { margin-top: 19px; font-size: 34px; letter-spacing: -1.5px; }
   .experience-row {
@@ -1277,6 +1299,11 @@ h1 span { color: #fff; -webkit-text-stroke: 0; }
   .experience-description { margin-top: 15px; font-size: 12px; line-height: 1.6; }
   .aerd-press,
   .gtpl-objectives,
+  .org-profile,
+  .tasa-row:hover .org-profile,
+  .tasa-row:focus-within .org-profile,
+  .arrc-row:hover .org-profile,
+  .arrc-row:focus-within .org-profile,
   .aerd-row:hover .aerd-press,
   .aerd-row:focus-within .aerd-press,
   .gtpl-row:hover .gtpl-objectives,
